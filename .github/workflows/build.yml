@@ -48,7 +48,9 @@ jobs:
         run: pnpm --dir frontend install --frozen-lockfile
 
       - name: Validate official update channel
-        if: github.event_name != 'pull_request'
+        # Only the official repository owns the update signing channel. Fork
+        # builds skip this gate so their compile and test steps still run.
+        if: github.event_name != 'pull_request' && github.repository == 'kongbaiz/nte-dps-toolkit'
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
